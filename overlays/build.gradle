@@ -1,0 +1,45 @@
+import scaldingspoon.gradle.WarOverlayPlugin
+
+subprojects {
+
+    apply plugin: 'maven'
+    apply plugin: WarOverlayPlugin
+    apply plugin: org.esco.script.gradle.plugins.GradleTomcatDeployPlugin
+
+    task allDeps(type: DependencyReportTask) {}
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+	maven { url "https://jitpack.io" }
+        maven {
+            url "https://s01.oss.sonatype.org/content/groups/public/"
+            mavenContent {
+                snapshotsOnly()
+            }
+        }
+        maven {
+            url "https://nexus.recia.dev/repository/releases/"
+        }
+        maven {
+            url "https://nexus.recia.dev/repository/snapshots/"
+        }
+
+    }
+
+    warOverlay {
+        // Include the jar files in the WAR (default is false).
+        includeWarJars true
+    }
+
+    configurations {
+        war {}
+        shell
+        impexp
+    }
+
+    artifacts {
+        war tasks.war
+    }
+
+}
