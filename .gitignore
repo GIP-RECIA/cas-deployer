@@ -36,3 +36,5 @@ gradle-app.setting
 
 # ignore local deployement properties
 build.properties
+
+.idea

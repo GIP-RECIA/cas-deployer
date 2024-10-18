@@ -1,5 +1,13 @@
 # cas-deployer
-Deployer for CAS since version 7.1
 
-gradle-war-deployer for cas
-embed deployed app on tomcat, like the tomcat-manager, psi-probe
+gradle-war-deployer for CAS since version 7.1
+
+Before deploying, make sure that `gradle.properties` and `.env.sh` are correctly configured.
+
+Make sure to load env variables : `source env.sh`
+
+Gradle commands :
+- Install tomcat : `./gradlew tomcatInstall`
+- Deploy webapps : `./gradlew tomcatDeploy`
+- Start tomcat : `./gradlew tomcatStart`
+- Stop tomcat : `./gradlew tomcatStop`
