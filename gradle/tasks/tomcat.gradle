@@ -114,8 +114,6 @@ task tomcatStart() {
      */
     mustRunAfter ':tomcatInstall'
     mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('tomcatDeploy') } }
-    //mustRunAfter ':hsqlStart'
-    //mustRunAfter allprojects.collect { it.tasks.matching { it.name.equals('dataInit') } }
 
     doLast {
         verifyTomcatState(project, false)
