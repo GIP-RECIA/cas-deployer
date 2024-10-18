@@ -64,11 +64,7 @@
          APR (HTTP/AJP) Connector: /docs/apr.html
          Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
     -->
-    <!--
-    <Connector port="8080" protocol="HTTP/1.1"
-               connectionTimeout="20000"
-               redirectPort="8443" />
-    -->
+
     <!-- A "Connector" using the shared thread pool-->
     <Connector executor="tomcatThreadPool"
                scheme="https" secure="true"
@@ -80,54 +76,6 @@
                compressionMinSize="1024"
                compressibleMimeType="text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml"
                />
-    <!-- Define an SSL/TLS HTTP/1.1 Connector on port 8443
-         This connector uses the NIO implementation. The default
-         SSLImplementation will depend on the presence of the APR/native
-         library and the useOpenSSL attribute of the AprLifecycleListener.
-         Either JSSE or OpenSSL style configuration may be used regardless of
-         the SSLImplementation selected. JSSE style configuration is used below.
-    -->
-    <!--
-    <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
-               maxThreads="150" SSLEnabled="true"
-               maxParameterCount="1000"
-               >
-        <SSLHostConfig>
-            <Certificate certificateKeystoreFile="conf/localhost-rsa.jks"
-                         type="RSA" />
-        </SSLHostConfig>
-    </Connector>
-    -->
-    <!-- Define an SSL/TLS HTTP/1.1 Connector on port 8443 with HTTP/2
-         This connector uses the APR/native implementation which always uses
-         OpenSSL for TLS.
-         Either JSSE or OpenSSL style configuration may be used. OpenSSL style
-         configuration is used below.
-    -->
-    <!--
-    <Connector port="8443" protocol="org.apache.coyote.http11.Http11AprProtocol"
-               maxThreads="150" SSLEnabled="true"
-               maxParameterCount="1000"
-               >
-        <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
-        <SSLHostConfig>
-            <Certificate certificateKeyFile="conf/localhost-rsa-key.pem"
-                         certificateFile="conf/localhost-rsa-cert.pem"
-                         certificateChainFile="conf/localhost-rsa-chain.pem"
-                         type="RSA" />
-        </SSLHostConfig>
-    </Connector>
-    -->
-
-    <!-- Define an AJP 1.3 Connector on port 8009 -->
-    <!--
-    <Connector protocol="AJP/1.3"
-               address="::1"
-               port="8009"
-               redirectPort="8443"
-               maxParameterCount="1000"
-               />
-    -->
 
     <!-- An Engine represents the entry point (within Catalina) that processes
          every request.  The Engine implementation for Tomcat stand alone
@@ -140,13 +88,6 @@
     -->
     <Engine name="Catalina" defaultHost="localhost">
 
-      <!--For clustering, please take a look at documentation at:
-          /docs/cluster-howto.html  (simple how to)
-          /docs/config/cluster.html (reference documentation) -->
-      <!--
-      <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
-      -->
-
       <!-- Use the LockOutRealm to prevent attempts to guess user passwords
            via a brute-force attack -->
       <Realm className="org.apache.catalina.realm.LockOutRealm">
@@ -158,19 +99,9 @@
                resourceName="UserDatabase"/>
       </Realm>
 
-      <Host name="localhost"  appBase="webapps"
-            unpackWARs="false" autoDeploy="false">
+      <Host name="localhost"  appBase="webapps" unpackWARs="false" autoDeploy="false">
 
-          <Context path="/publisher" docBase="${server.webapps}/esup-publisher" reloadable="false" crossContext="true" >
-               <Parameter name="spring.config.additional-location" value="${PROJECT_HOME}/esup-publisher/"/>
-          </Context>
-          <Context path="/pronote-ws" docBase="${server.webapps}/pronote-ws" reloadable="false" crossContext="true" >
-               <Parameter name="spring.config.additional-location" value="${PROJECT_HOME}/pronote-ws/"/>
-          </Context>
-          <Context path="/glc2" docBase="${server.webapps}/GLC" reloadable="false" crossContext="true" >
-               <Parameter name="spring.config.additional-location" value="${PROJECT_HOME}/glc/"/>
-          </Context>
-          <Context path="/wisemapping" docBase="${server.webapps}/wisemapping" reloadable="false" crossContext="true"/>
+          <Context path="/cas" docBase="${server.webapps}/cas" reloadable="false" crossContext="true"/>
           <Context path="/manager" docBase="${server.home}/webapps/manager" reloadable="false" antiResourceLocking="false" privileged="true" useHttpOnly="true">
           </Context>
           <Context path="/probe" docBase="${server.webapps}/psi-probe" reloadable="false" antiResourceLocking="false" privileged="true" useHttpOnly="true" >
@@ -193,8 +124,7 @@
           suffix=".log"
           pattern='%h %{X-HAProxy-Name}i %l %u %t "%r" %s %b %S %Dms %Fms %I %X %{X-Unique-Id}i "%{Referer}i" "%{User-Agent}i"'
           renameOnRotate="true"
-          requestAttributesEnabled="true"
-        />
+          requestAttributesEnabled="true" />
 
       </Host>
     </Engine>

@@ -9,5 +9,5 @@
 
 rootProject.name = 'gradle-war-deployer'
 
-
+include 'overlays:cas'
 include 'overlays:psi-probe'
