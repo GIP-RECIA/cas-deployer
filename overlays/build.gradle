@@ -2,7 +2,7 @@ import scaldingspoon.gradle.WarOverlayPlugin
 
 subprojects {
 
-    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
     apply plugin: WarOverlayPlugin
     apply plugin: org.esco.script.gradle.plugins.GradleTomcatDeployPlugin
 
@@ -25,6 +25,12 @@ subprojects {
             url "https://nexus.recia.dev/repository/snapshots/"
         }
 
+    }
+
+    war {
+        from(configurations.runtimeClasspath) {
+            into 'WEB-INF/lib'
+        }
     }
 
     warOverlay {

@@ -1,9 +1,9 @@
 dependencies {
-    runtime "org.apereo.cas:cas-server:${casServerVersion}@war"
+    runtimeOnly "org.apereo.cas:cas-server:${casServerVersion}@war"
 }
 
 war {
-    archiveName="cas.war"
+    archiveFileName="cas.war"
 
     classpath = classpath.files
 }
