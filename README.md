@@ -2,7 +2,7 @@
 
 gradle-war-deployer for CAS since version 7.1
 
-Before deploying, make sure that `gradle.properties` and `.env.sh` are correctly configured.
+Before deploying, make sure that `build.properties` and `env.sh` are correctly configured.
 
 Make sure to load env variables : `source env.sh`
 
