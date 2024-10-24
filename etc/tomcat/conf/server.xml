@@ -102,16 +102,14 @@
       <Host name="localhost"  appBase="webapps" unpackWARs="false" autoDeploy="false">
 
           <Context path="/cas" docBase="${server.webapps}/cas" reloadable="false" crossContext="true"/>
+          <Context path="/externalid" docBase="${server.webapps}/externalid" reloadable="false"  crossContext="true">
+            <Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1"/>
+            <Parameter name="spring.config.additional-location" value="{PROPERTIES-FILE}"/>
+          </Context>
           <Context path="/manager" docBase="${server.home}/webapps/manager" reloadable="false" antiResourceLocking="false" privileged="true" useHttpOnly="true">
           </Context>
           <Context path="/probe" docBase="${server.webapps}/psi-probe" reloadable="false" antiResourceLocking="false" privileged="true" useHttpOnly="true" >
           </Context>
-
-        <!-- SingleSignOn valve, share authentication between web applications
-             Documentation at: /docs/config/valve.html -->
-        <!--
-        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
-        -->
 
         <!-- Access log processes all example.
              Documentation at: /docs/config/valve.html

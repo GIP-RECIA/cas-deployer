@@ -1,0 +1,9 @@
+dependencies {
+    runtimeOnly "fr.recia.esco.sarapis.api:externalids:${externalIdApiVersion}@war"
+}
+
+war {
+    archiveFileName="externalid.war"
+
+    classpath = classpath.files
+}
