@@ -38,3 +38,5 @@ gradle-app.setting
 build.properties
 
 .idea
+overlays/cas/bin
+overlays/externalid/bin
