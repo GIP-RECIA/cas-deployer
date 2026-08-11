@@ -1,6 +1,5 @@
 package scaldingspoon.gradle
 
-import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
@@ -11,46 +10,58 @@ import org.gradle.api.tasks.bundling.War
  * Plugin class to support WAR overlay
  */
 class WarOverlayPlugin implements Plugin<Project> {
+
     @Override
     void apply(Project project) {
         project.plugins.apply(WarPlugin)
-        project.convention.plugins.warOverlay = new WarOverlayPluginConvention()
 
-        project.tasks.withType(War, new Action<War>() {
-            @Override
-            void execute(War war) {
-                war.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-                war.doFirst {
-                    war.classpath = war.classpath.filter { !it.name.endsWith(".war") }
+        def warOverlay = project.extensions.create(
+                'warOverlay',
+                WarOverlayPluginExtension
+        )
 
-                    war.project.configurations.runtimeClasspath.each {
-                        if (it.name.endsWith(".war")) {
-                            def fileList = war.project.zipTree(it)
-                            if (project.convention.plugins.warOverlay.includeWarJars) {
-                                war.from fileList
-                            } else {
-                                war.from fileList.matching { exclude "**/*.jar" }
+        project.tasks.withType(War).configureEach { War war ->
+            war.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+            war.doFirst {
+                war.classpath = war.classpath.filter {
+                    !it.name.endsWith('.war')
+                }
+
+                war.project.configurations.runtimeClasspath.each { file ->
+                    if (file.name.endsWith('.war')) {
+                        def fileList = war.project.zipTree(file)
+
+                        if (warOverlay.includeWarJars) {
+                            war.from fileList
+                        } else {
+                            war.from fileList.matching {
+                                exclude '**/*.jar'
                             }
                         }
                     }
                 }
             }
-        })
+        }
     }
 }
 
 /**
- * Plugin convention to configure war overlay specific parameters
+ * Extension to configure WAR overlay specific parameters.
  */
-class WarOverlayPluginConvention {
+class WarOverlayPluginExtension {
+
     boolean includeWarJars = false
 
-    def warOverlay(Closure c) {
-        c.delegate = this
-        c()
+    void warOverlay(Closure closure) {
+        closure.delegate = this
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        closure()
     }
 
     def methodMissing(String name, args) {
-        this."${name}" = args[0]
+        if (args && args.length > 0) {
+            this."${name}" = args[0]
+        }
     }
 }
