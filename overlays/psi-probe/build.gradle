@@ -1,9 +1,0 @@
-dependencies {
-    runtimeOnly "com.github.psi-probe:psi-probe-web:${psiProbeVersion}@war"
-}
-
-war {
-    archiveFileName='psi-probe.war'
-
-    classpath = classpath.files
-}
