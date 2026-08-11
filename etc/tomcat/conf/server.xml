@@ -109,8 +109,6 @@
           </Context>
           <Context path="/manager" docBase="${server.home}/webapps/manager" reloadable="false" antiResourceLocking="false" privileged="true" useHttpOnly="true">
           </Context>
-          <Context path="/probe" docBase="${server.webapps}/psi-probe" reloadable="false" antiResourceLocking="false" privileged="true" useHttpOnly="true" >
-          </Context>
 
         <!-- Access log processes all example.
              Documentation at: /docs/config/valve.html
